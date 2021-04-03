@@ -1,0 +1,367 @@
+"use strict";
+var helpers = require("../example/node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+helpers.prelude(module);
+try {
+  var _s = $RefreshSig$(), _s2 = $RefreshSig$();
+  Object.defineProperty(exports, '__esModule', {
+    value: true
+  });
+  function _interopDefault(ex) {
+    return ex && typeof ex === 'object' && ('default' in ex) ? ex['default'] : ex;
+  }
+  var React = require('react');
+  var React__default = _interopDefault(React);
+  _c = React__default;
+  var reactSpring = require('react-spring');
+  var styled = _interopDefault(require('styled-components'));
+  var useImmer = require('use-immer');
+  function _extends() {
+    _extends = Object.assign || (function (target) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+      return target;
+    });
+    return _extends.apply(this, arguments);
+  }
+  function _taggedTemplateLiteralLoose(strings, raw) {
+    if (!raw) {
+      raw = strings.slice(0);
+    }
+    strings.raw = raw;
+    return strings;
+  }
+  var ResizeObserver = window.ResizeObserver;
+  /**
+  *   const [bind, { width }] = useMeasure()
+  *   <div {...bind}>...<div/>
+  */
+  function useMeasure() {
+    _s();
+    var ref = React.useRef();
+    var _useState = React.useState({
+      left: 0,
+      top: 0,
+      width: 0,
+      height: 0
+    }), bounds = _useState[0], set = _useState[1];
+    var _useState2 = React.useState(ref.current), element = _useState2[0], setElement = _useState2[1];
+    // Check every render but only trigger reinitialization when ref value changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    React.useEffect(function () {
+      if (ref.current !== element) {
+        setElement(ref.current);
+      }
+    });
+    var ro = React.useMemo(function () {
+      return new ResizeObserver(function (_ref) {
+        var entry = _ref[0];
+        return element && set(entry.contentRect);
+      });
+    }, [element]);
+    React.useEffect(function () {
+      return (
+        // eslint-disable-next-line no-sequences
+        (element && ro.observe(element), function () {
+          element && ro.disconnect();
+        })
+      );
+    }, [ro, element]);
+    return [{
+      ref: ref
+    }, bounds];
+  }
+  _s(useMeasure, "crE0BfTqXz6yDJTdXje4AccibjM=");
+  var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6;
+  var ResizeObserver$1 = window.ResizeObserver;
+  var CHARS = ["9", "8", "7", "6", "5", "4", "3", "2", "1", "0", "-", "$", ",", "."];
+  var CHARS_INVERSE_LOOKUP = /*#__PURE__*/CHARS.reduce(_c2 = function (map, cur, curIdx) {
+    map[cur] = curIdx;
+    return map;
+  }, {});
+  _c3 = CHARS_INVERSE_LOOKUP;
+  // Given a char, which key/index is it? Fast O(1) lookup
+  var getIndexFromChar = function getIndexFromChar(_char2) {
+    return CHARS_INVERSE_LOOKUP[_char2];
+  };
+  var Number = /*#__PURE__*/styled.div(_templateObject || (_templateObject = /*#__PURE__*/_taggedTemplateLiteralLoose(["\n  font-family: ", ";\n  font-weight: 600;\n  font-size: ", ";\n  color: #0e103c;\n  font-feature-settings: \"tnum\";\n  font-variant-numeric: tabular-nums;\n  letter-spacing: -0.7px;\n  line-height: ", ";\n"])), function (props) {
+    return props.fontFamily;
+  }, function (props) {
+    return props.lineHeight;
+  }, function (props) {
+    return props.lineHeight;
+  });
+  _c4 = Number;
+  var HiddenMeasureCharsContainer = /*#__PURE__*/styled.div(_templateObject2 || (_templateObject2 = /*#__PURE__*/_taggedTemplateLiteralLoose(["\n  position: absolute;\n  user-select: none;\n  visibility: hidden;\n"])));
+  var AnimatedHiddenMeasureCharsContainer = /*#__PURE__*/reactSpring.animated(HiddenMeasureCharsContainer);
+  _c5 = AnimatedHiddenMeasureCharsContainer;
+  function addCommas(num, removeComma) {
+    if (removeComma === void 0) {
+      removeComma = false;
+    }
+    var sides = [];
+    sides = num.toString().split(".");
+    sides[0] = removeComma ? sides[0] : sides[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return sides.join(".");
+  }
+  var numberStringToArray = function numberStringToArray(n) {
+    return addCommas(n).split("");
+  };
+  var RelativeContainer = /*#__PURE__*/styled.div(_templateObject3 || (_templateObject3 = /*#__PURE__*/_taggedTemplateLiteralLoose(["\n  display: flex;\n  width: 100%;\n  height: ", ";\n  max-height: ", ";\n  min-height: ", ";\n  position: relative;\n  flex: 1;\n"])), function (props) {
+    return props.lineHeight;
+  }, function (props) {
+    return props.lineHeight;
+  }, function (props) {
+    return props.lineHeight;
+  });
+  _c6 = RelativeContainer;
+  var NumberOutsideContainer = /*#__PURE__*/styled.div(_templateObject4 || (_templateObject4 = /*#__PURE__*/_taggedTemplateLiteralLoose(["\n  position: absolute;\n  /* Initial animation styles so SSR matches client */\n  opacity: 0;\n  transform: none;\n"])));
+  var AnimatedNumberOutsideContainer = /*#__PURE__*/reactSpring.animated(NumberOutsideContainer);
+  _c7 = AnimatedNumberOutsideContainer;
+  var DEFAULT_FONT_SIZE = 36;
+  // const DEFAULT_LINE_HEIGHT_IN_PX = `${DEFAULT_LINE_HEIGHT}px`;
+  var Ticker = function Ticker(_ref) {
+    _s2();
+    var n = _ref.n, _ref$align = _ref.align, align = _ref$align === void 0 ? "right" : _ref$align, alignLeftComponentAfterNumber = _ref.alignLeftComponentAfterNumber, _ref$fontFamily = _ref.fontFamily, fontFamily = _ref$fontFamily === void 0 ? 'Avenir' : _ref$fontFamily, _ref$fontSize = _ref.fontSize, fontSize = _ref$fontSize === void 0 ? DEFAULT_FONT_SIZE : _ref$fontSize;
+    var lineHeight = fontSize;
+    var lineHeightInPx = lineHeight + "px";
+    var _useState = React.useState(false), hasMeasured = _useState[0], setHasMeasured = _useState[1];
+    var chars = React.useMemo(function () {
+      return n ? numberStringToArray(n) : [];
+    }, [n]);
+    var _useMeasure = useMeasure(), bindContainerRef = _useMeasure[0], hiddenCharsContainerWidth = _useMeasure[1].width;
+    var _useMeasure2 = useMeasure(), bindContainerWidthMeasure = _useMeasure2[0], containerWidth = _useMeasure2[1].width;
+    var measureCharRefs = React.useRef([]);
+    var _useImmer = useImmer.useImmer([]), measurements = _useImmer[0], setMeasurements = _useImmer[1];
+    var _useImmer2 = useImmer.useImmer([]), resizeObservers = _useImmer2[0], setResizeObservers = _useImmer2[1];
+    var totalMaginParentContainer = 0;
+    // 32;
+    var totalWidth = containerWidth - totalMaginParentContainer;
+    // Set up our measuring of available char widths  (basically configuring refs and resize observers)
+    // This measures each character in our CHARS array so we can later calculate where/how to lay out a given number to a user
+    React.useLayoutEffect(function () {
+      if (measureCharRefs.current.length !== CHARS.length) {
+        console.error("Mismatch with the internal text nodes measurer, bailing");
+        return;
+      }
+      if (hiddenCharsContainerWidth === 0) {
+        return;
+      }
+      CHARS.forEach(function (_char, idx) {
+        var ref = measureCharRefs.current[idx];
+        if (!ref) {
+          console.warn("Undefined ref, this hints at a bigger problem (are you sure the refs are being set correctly on setup?");
+          return undefined;
+        }
+        // FWIW, these shouldn't really resize often (unless font/style changes)
+        var ro = new ResizeObserver$1(function (_ref2) {
+          var entry = _ref2[0];
+          return ref && setMeasurements(function (draft) {
+            draft[idx] = entry.contentRect;
+          });
+        });
+        setResizeObservers(function (draft) {
+          draft[idx] = ro;
+        });
+        // Set initial sizes (RO doesn't guarantee to fire initially due to timings)
+        setMeasurements(function (draft) {
+          var _ref$getBoundingClien = ref.getBoundingClientRect(), left = _ref$getBoundingClien.left, right = _ref$getBoundingClien.right, bottom = _ref$getBoundingClien.bottom, top = _ref$getBoundingClien.top;
+          draft[idx] = {
+            left: left,
+            right: right,
+            bottom: bottom,
+            top: top
+          };
+        });
+        // Start the RO
+        var start = function start() {
+          return ref && ro.observe(ref);
+        };
+        start();
+        return undefined;
+      });
+      return function () {
+        resizeObservers.forEach(function (ro) {
+          return ro.disconnect();
+        });
+      };
+    }, [hiddenCharsContainerWidth]);
+    React.useLayoutEffect(function () {
+      var _measurements$;
+      if ((measurements == null ? void 0 : (_measurements$ = measurements[0]) == null ? void 0 : _measurements$.right) > 0 && containerWidth > 0) {
+        setHasMeasured(true);
+      }
+    }, [containerWidth, measurements, setHasMeasured]);
+    var charsWithMetadata = React.useMemo(function () {
+      var numChars = chars.length;
+      var runningWidth = 0;
+      var validAmountOfDollarSignsAndDecimals = chars.filter(function (x) {
+        return x === "$";
+      }).length <= 1 && chars.filter(function (x) {
+        return x === ".";
+      }).length <= 1;
+      var calcuteMetadataAndPositioning = function calcuteMetadataAndPositioning(_char3, idx, align) {
+        var shouldAlignLeft = align === "left";
+        var lookupCharMeasurementIdx = getIndexFromChar(_char3);
+        var measuredChar = measurements[lookupCharMeasurementIdx];
+        var charWidth = (measuredChar == null ? void 0 : measuredChar.right) - (measuredChar == null ? void 0 : measuredChar.left);
+        var lastTotalWidthCalc = runningWidth;
+        runningWidth = runningWidth + charWidth;
+        var id = idx + "-" + _char3 + "-" + align;
+        // want to keep the $ static, so we fix its id so react-spring keeps it around regardless of position
+        if (validAmountOfDollarSignsAndDecimals && (_char3 === "$" || _char3 === ".")) {
+          id = _char3;
+        }
+        var metadata = {
+          position: numChars - idx,
+          character: _char3,
+          id: id,
+          width: charWidth,
+          xPosition: shouldAlignLeft ? lastTotalWidthCalc : totalWidth - runningWidth
+        };
+        return metadata;
+      };
+      var calculateAllMetadataAlignedRight = function calculateAllMetadataAlignedRight(chars) {
+        // note the reverse (to measure properly from the right), then the reverse back so we can send it to react-spring in the order we want
+        return chars.reverse().map(function (_char4, idxFromLeft) {
+          return calcuteMetadataAndPositioning(_char4, idxFromLeft, "right");
+        }).reverse();
+      };
+      var calculateAllMetadataAlignedLeft = function calculateAllMetadataAlignedLeft(chars) {
+        return chars.map(function (_char5, idxFromLeft) {
+          return calcuteMetadataAndPositioning(_char5, idxFromLeft, "left");
+        });
+      };
+      if (align === "left") {
+        var allMetadataLeft = calculateAllMetadataAlignedLeft(chars);
+        if (alignLeftComponentAfterNumber) {
+          var componentMetadata = {
+            character: alignLeftComponentAfterNumber,
+            id: alignLeftComponentAfterNumber,
+            position: chars.length + 1,
+            width: 0,
+            xPosition: runningWidth + 8
+          };
+          allMetadataLeft = [].concat(allMetadataLeft, [componentMetadata]);
+        }
+        return allMetadataLeft;
+      } else {
+        return calculateAllMetadataAlignedRight(chars);
+      }
+    }, [chars, align, measurements, totalWidth, alignLeftComponentAfterNumber]);
+    var transitionRef = React.useRef(null);
+    var from = React.useCallback(function (metadata) {
+      return {
+        opacity: 0,
+        transform: "translate3d(" + metadata.xPosition + "px, 0, 0)",
+        scale: "scale3d(0.5, 0.5, 1)"
+      };
+    }, []);
+    var enter = React.useCallback(function (metadata) {
+      return {
+        opacity: 1,
+        transform: "translate3d(" + metadata.xPosition + "px, 0, 0)",
+        scale: "scale3d(1, 1, 1)"
+      };
+    }, []);
+    var leave = React.useCallback(function (metadata) {
+      return {
+        opacity: 0,
+        transform: "translate3d(" + metadata.xPosition + "px, 0, 0)",
+        scale: "scale3d(0.5, 0.5, 1)"
+      };
+    }, []);
+    var update = React.useCallback(function (metadata) {
+      return {
+        opacity: 1,
+        transform: "translate3d(" + metadata.xPosition + "px, 0, 0)",
+        scale: "scale3d(1, 1, 1)"
+      };
+    }, []);
+    var transitions = reactSpring.useTransition(hasMeasured ? charsWithMetadata : charsWithMetadata, {
+      ref: transitionRef,
+      initial: false,
+      reset: !hasMeasured,
+      keys: function keys(x) {
+        return x.id;
+      },
+      from: from,
+      enter: enter,
+      leave: leave,
+      update: update,
+      config: _extends({}, reactSpring.config.stiff, {
+        clamp: true
+      }),
+      trail: 45
+    });
+    reactSpring.useChain([transitionRef], [0]);
+    return React__default.createElement(React__default.Fragment, null, React__default.createElement(AnimatedHiddenMeasureCharsContainer, Object.assign({}, bindContainerRef, {
+      key: "measure-chars",
+      "aria-hidden": "true"
+    }), CHARS.map(function (_char6, idx) {
+      return React__default.createElement(Number, {
+        fontFamily: fontFamily,
+        lineHeight: lineHeightInPx,
+        key: _char6
+      }, React__default.createElement("span", {
+        ref: function ref(el) {
+          return measureCharRefs.current[idx] = el;
+        }
+      }, _char6));
+    })), React__default.createElement(AbsoluteFillContainer, Object.assign({}, bindContainerWidthMeasure)), hasMeasured && React__default.createElement(RelativeContainer, {
+      lineHeight: lineHeightInPx
+    }, transitions(function (props, item) {
+      return React__default.createElement(AnimatedNumberOutsideContainer, {
+        key: item.id,
+        style: {
+          opacity: props.opacity,
+          transform: props.transform
+        }
+      }, React__default.createElement(AnimatedNumberContainer, {
+        style: {
+          transform: props.scale
+        }
+      }, React__default.createElement(Number, {
+        fontFamily: fontFamily,
+        lineHeight: lineHeightInPx
+      }, item.character)));
+    }), React__default.createElement(Number, {
+      fontFamily: fontFamily,
+      lineHeight: lineHeightInPx
+    })));
+  };
+  _s2(Ticker, "CLQm4DeoIJXHv3DMW2vpxZYvVKo=", false, function () {
+    return [useMeasure, useMeasure, useImmer.useImmer, useImmer.useImmer, reactSpring.useTransition, reactSpring.useChain];
+  });
+  _c8 = Ticker;
+  var NumberContainer = /*#__PURE__*/styled.div(_templateObject5 || (_templateObject5 = /*#__PURE__*/_taggedTemplateLiteralLoose(["\n  position: absolute;\n  will-change: transform;\n"])));
+  var AnimatedNumberContainer = /*#__PURE__*/reactSpring.animated(NumberContainer);
+  _c9 = AnimatedNumberContainer;
+  var AbsoluteFillContainer = /*#__PURE__*/reactSpring.animated(/*#__PURE__*/styled.div(_templateObject6 || (_templateObject6 = /*#__PURE__*/_taggedTemplateLiteralLoose(["\n  position: absolute;\n  left: 0;\n  right: 0;\n  height: 1px;\n"]))));
+  _c10 = AbsoluteFillContainer;
+  exports.CHARS = CHARS;
+  exports.Ticker = Ticker;
+  exports.addCommas = addCommas;
+  var _c, _c2, _c3, _c4, _c5, _c6, _c7, _c8, _c9, _c10;
+  $RefreshReg$(_c, "React__default");
+  $RefreshReg$(_c2, "CHARS_INVERSE_LOOKUP$CHARS.reduce");
+  $RefreshReg$(_c3, "CHARS_INVERSE_LOOKUP");
+  $RefreshReg$(_c4, "Number");
+  $RefreshReg$(_c5, "AnimatedHiddenMeasureCharsContainer");
+  $RefreshReg$(_c6, "RelativeContainer");
+  $RefreshReg$(_c7, "AnimatedNumberOutsideContainer");
+  $RefreshReg$(_c8, "Ticker");
+  $RefreshReg$(_c9, "AnimatedNumberContainer");
+  $RefreshReg$(_c10, "AbsoluteFillContainer");
+  helpers.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
