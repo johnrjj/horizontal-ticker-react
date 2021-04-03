@@ -8,6 +8,8 @@ A ticker that updates horizontally instead of vertically.
 
 ![example](./example.gif)
 
+(gif is potato quality, go to demo site)
+
 ## Usage
 
 ### Install

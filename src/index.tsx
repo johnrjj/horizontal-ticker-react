@@ -18,7 +18,7 @@ import { useMeasure } from './useMeasure'
 
 const ResizeObserver = window.ResizeObserver
 
-export const CHARS = [
+const CHARS = [
   '9',
   '8',
   '7',
@@ -35,6 +35,8 @@ export const CHARS = [
   '.',
 ]
 
+const DEFAULT_FONT_SIZE = 36
+
 const CHARS_INVERSE_LOOKUP = CHARS.reduce((map, cur, curIdx): {
   [key: string]: number
 } => {
@@ -45,6 +47,21 @@ const CHARS_INVERSE_LOOKUP = CHARS.reduce((map, cur, curIdx): {
 // Given a char, which key/index is it? Fast O(1) lookup
 const getIndexFromChar = (char: string): number => {
   return CHARS_INVERSE_LOOKUP[char]
+}
+
+function addCommas(num: number | string, removeComma: boolean = false): string {
+  let sides: Array<string> = []
+
+  sides = num.toString().split('.')
+  sides[0] = removeComma
+    ? sides[0]
+    : sides[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
+  return sides.join('.')
+}
+
+const numberStringToArray = (n: string) => {
+  return addCommas(n).split('')
 }
 
 const Number = styled.div<{ lineHeight: string | number; fontFamily: string }>`
@@ -66,38 +83,20 @@ const HiddenMeasureCharsContainer = styled.div`
 
 const AnimatedHiddenMeasureCharsContainer = a(HiddenMeasureCharsContainer)
 
-export function addCommas(
-  num: number | string,
-  removeComma: boolean = false
-): string {
-  let sides: Array<string> = []
+const NumberContainer = styled.div`
+  position: absolute;
+  will-change: transform;
+`
 
-  sides = num.toString().split('.')
-  sides[0] = removeComma
-    ? sides[0]
-    : sides[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+const AnimatedNumberContainer = a(NumberContainer)
 
-  return sides.join('.')
-}
-
-const numberStringToArray = (n: string) => {
-  return addCommas(n).split('')
-}
-
-export interface TickerProps {
-  n: string
-  align?: 'left' | 'right'
-  alignLeftComponentAfterNumber?: string
-  fontFamily?: string
-  fontSize?: number
-}
-
-interface BoundingRectMeasurement {
-  left: number
-  top: number
-  right: number
-  bottom: number
-}
+const AbsoluteFillContainer = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+`
+const AnimatedAbsoluteFillContainer = a(AbsoluteFillContainer)
 
 const RelativeContainer = styled.div<{ lineHeight: string | number }>`
   display: flex;
@@ -116,7 +115,28 @@ const NumberOutsideContainer = styled.div`
 `
 const AnimatedNumberOutsideContainer = a(NumberOutsideContainer)
 
-const DEFAULT_FONT_SIZE = 36
+interface CharWithMetadata {
+  position: number // index in the lookup
+  character: string
+  id: string
+  width: number
+  xPosition: number
+}
+
+interface BoundingRectMeasurement {
+  left: number
+  top: number
+  right: number
+  bottom: number
+}
+
+export interface TickerProps {
+  n: string
+  align?: 'left' | 'right'
+  alignLeftComponentAfterNumber?: string
+  fontFamily?: string
+  fontSize?: number
+}
 
 const Ticker: React.FC<TickerProps> = ({
   n,
@@ -372,29 +392,6 @@ const Ticker: React.FC<TickerProps> = ({
       )}
     </>
   )
-}
-
-const NumberContainer = styled.div`
-  position: absolute;
-  will-change: transform;
-`
-
-const AnimatedNumberContainer = a(NumberContainer)
-
-const AbsoluteFillContainer = styled.div`
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 1px;
-`
-const AnimatedAbsoluteFillContainer = a(AbsoluteFillContainer)
-
-export interface CharWithMetadata {
-  position: number // index in the lookup
-  character: string
-  id: string
-  width: number
-  xPosition: number
 }
 
 export { Ticker }
